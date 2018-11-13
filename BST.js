@@ -9,11 +9,10 @@ class BinarySearchTree {
   }
 
   insert(key, value) {
-    if(this.key) {
+    if(this.key == null) {
       this.key = key;
       this.value = value;
     }
-
     else if(key < this.key) {
       if(this.left == null) {
         this.left = new BinarySearchTree(key, value, this);
@@ -30,7 +29,7 @@ class BinarySearchTree {
   }
 
   find(key) {
-    if (this.key === key) {
+    if (this.key == key) {
       return this.value;
     } else if (key < this.key && this.left) {
       return this.left.find(key);
@@ -50,6 +49,11 @@ class BinarySearchTree {
         successor.remove(successor.key);
       } else if(this.right) {
         this._replaceWith(this.right);
+      } else if(this.left) {
+        const successor = this.left._findMin();
+        this.key = successor.key;
+        this.value = successor.value;
+        successor.remove(successor.key);
       } else {
         this._replaceWith(null);
       }
@@ -57,7 +61,9 @@ class BinarySearchTree {
       this.left.remove(key);
     } else if(key > this.key && this.right) {
       this.right.remove(key);
-    } else {
+    }
+
+    else {
       throw new Error('Key Error');
     }
   }
@@ -97,3 +103,5 @@ class BinarySearchTree {
   }
 
 }
+
+module.exports = BinarySearchTree;
