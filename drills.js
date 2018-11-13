@@ -1,7 +1,7 @@
 const BST = require('./BST');
 const tree = new BST();
 
-const arr = [ 3, 1, 4, 6, 9, 2, 5, 7 ];
+const arr = [3,4,1];
 
 arr.forEach((item) => tree.insert(item, item));
 
@@ -16,7 +16,6 @@ arr.forEach((item) => tree.insert(item, item));
 //  right counter, left counter -> findmin
 
 function findHeight(tree, lCount = 1, rCount = 1) {
-  let curNode;
   lCount = lCount;
   rCount = rCount;
 
@@ -75,18 +74,68 @@ function isBst(tree, minimum, maximum) {
 // }
 
 
-function is_bst(tree, minimum, maximum) { 
-  if (minimum !== undefined && tree.key < minimum) 
+function is_bst(tree, minimum, maximum) {
+  if (minimum !== undefined && tree.key < minimum)
     return false;
-  if (maximum !== undefined && tree.key > maximum) 
+  if (maximum !== undefined && tree.key > maximum)
     return false;
-  if (tree.left  && !is_bst(tree.left , minimum, tree.key)) 
+  if (tree.left  && !is_bst(tree.left , minimum, tree.key))
     return false;
-  if (tree.right && !is_bst(tree.right, tree.key, maximum)) 
+  if (tree.right && !is_bst(tree.right, tree.key, maximum))
     return false;
   return true;
 }
 
 
-console.log(isBst(tree));
+//console.log(isBst(tree));
 // console.log(tree);
+
+function thirdLargest(tree) {
+
+  let maxNode = tree._findMax();
+  if (!maxNode.left && !maxNode.right) {
+    return maxNode.parent.left.key;
+  } else if(maxNode.left && !maxNode.right) {
+      if(!maxNode.right) {
+        return maxNode.parent.key
+      } else {
+        return maxNode.parent.left.key;
+      }
+    }
+
+}
+//thirdLargest(tree)
+//console.log(thirdLargest(tree));
+
+
+function isBal(tree, lCount = 1, rCount = 1) {
+  lCount = lCount;
+  rCount = rCount;
+
+  if (tree === null) {
+    return 0;
+  }
+
+  function leftHeight(curNode) {
+    if (curNode.left !== null) {
+      lCount++;
+      curNode = curNode.left;
+      leftHeight(curNode);
+    }
+    return lCount;
+  }
+
+  function rightHeight(curNode) {
+    if (curNode.right !== null) {
+      rCount++;
+      curNode = curNode.right;
+      rightHeight(curNode);
+    }
+    return rCount;
+  }
+  let min = leftHeight(tree);
+  let max = rightHeight(tree);
+  return Math.abs((min - max)) < 1;
+}
+
+console.log(isBal(tree));
